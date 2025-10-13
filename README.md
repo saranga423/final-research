@@ -6,7 +6,7 @@ The AI-Powered Adaptive Career Guidance System is a web-based platform designed 
 It integrates AI modules, data analytics, and real-time job market intelligence to deliver personalized career recommendations and skill gap analysis.
 
 2. Architecture Layers
-🖥️ Frontend (React.js)
+Frontend (React.js)
 
 Purpose: Provides an interactive and responsive interface for users (students, universities, and employers).
 
@@ -20,7 +20,7 @@ Career Recommendations: Shows career paths, missing skills, and suggested course
 
 Communication: Sends data to the backend via RESTful APIs.
 
-⚙️ Backend (FastAPI / Node.js)
+Backend (FastAPI / Node.js)
 
 Purpose: Acts as the main processing hub and API provider.
 
@@ -34,7 +34,7 @@ Recommendation Engine: Communicates with AI modules to generate personalized res
 
 Data Flow: Receives requests from the frontend → processes logic → calls AI models → returns results.
 
-🧠 AI Modules (Python-based ML/NLP Components)
+AI Modules (Python-based ML/NLP Components)
 
 Skill Extraction Module:
 
@@ -54,7 +54,7 @@ Career Recommender:
 
 Suggests suitable job roles, certifications, and learning paths using AI-based recommendation algorithms.
 
-🗄️ Database (MongoDB)
+Database (MongoDB)
 
 Purpose: Stores user data, skill profiles, job market data, and AI results.
 
@@ -70,7 +70,7 @@ Recommendation Histories
 
 Reason for MongoDB: Flexible schema for evolving AI outputs and rapid prototyping.
 
-🌐 External Data Sources
+External Data Sources
 
 APIs Integrated:
 
@@ -80,7 +80,7 @@ O*NET Database – Occupational data and skill taxonomies.
 
 Kaggle / WEF datasets – Market and skill demand trends.
 
-🔒 Security & Ethics
+Security & Ethics
 
 Implements JWT-based authentication, data anonymization, and GDPR-compliance.
 
@@ -105,6 +105,7 @@ Frontend: Deployed on Vercel / Netlify.
 Backend + AI modules: Deployed using Docker + Render / AWS EC2.
 
 Database: Hosted on MongoDB Atlas for scalability.
+
 <img width="1536" height="1024" alt="ChatGPT Image Oct 11, 2025, 06_28_19 PM" src="https://github.com/user-attachments/assets/a64a9b75-695a-4a17-ac8a-78b19239a5c1" />
 
 
