@@ -106,6 +106,7 @@ Backend + AI modules: Deployed using Docker + Render / AWS EC2.
 
 Database: Hosted on MongoDB Atlas for scalability.
 
+
 <img width="1536" height="1024" alt="ChatGPT Image Oct 11, 2025, 06_28_19 PM" src="https://github.com/user-attachments/assets/a64a9b75-695a-4a17-ac8a-78b19239a5c1" />
 
 
