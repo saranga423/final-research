@@ -1,113 +1,60 @@
 # final-research
 
+An advanced AI-powered autonomous drone system designed to revolutionize agricultural pollination for pumpkin farms in Sri Lanka and similar tropical regions. This system addresses critical challenges of manual pollination including labor intensity, timing precision, pollinator decline, and climate variability.
+
 1. Overview
 
-The AI-Powered Adaptive Career Guidance System is a web-based platform designed to assist students, universities, and employers in bridging the gap between academic learning and industry skill demands.
-It integrates AI modules, data analytics, and real-time job market intelligence to deliver personalized career recommendations and skill gap analysis.
+This project implements an intelligent autonomous drone system capable of identifying, navigating to, and pollinating pumpkin flowers with precision timing. The system uses computer vision, artificial intelligence, and precision agriculture techniques to achieve up to 15% yield improvement over manual pollination methods.
+Problem Statement
+Pumpkin cultivation faces several critical challenges:
 
-2. Architecture Layers
-Frontend (React.js)
+Short receptivity window: Flowers are receptive for only 4-6 hours
+Labor intensity: Manual pollination is time-consuming and error-prone
+Pollinator decline: Natural bee populations are declining globally
+Climate variability: Unpredictable weather affects pollination timing
+Scalability: Manual methods don't scale for large farms
 
-Purpose: Provides an interactive and responsive interface for users (students, universities, and employers).
+2. Key Features
+Autonomous Navigation
 
-Key Features:
+RTK-GPS enabled precision positioning (±2cm)
+Waypoint-based flight planning
+Real-time obstacle avoidance
+Automatic return-to-home on low battery
+Geofencing for safe operation zones
 
-Student Dashboard: Displays skill analytics, job insights, and learning suggestions.
+AI-Powered Flower Detection
 
-Resume Upload: Accepts resumes or LinkedIn profiles to extract existing skills.
+YOLOv8-based object detection model
+Male/female flower classification
+Receptivity assessment using visual cues
+3D position calculation with depth sensing
+Processing speed: 60fps @ 1080p
 
-Career Recommendations: Shows career paths, missing skills, and suggested courses.
+Smart Pollination
 
-Communication: Sends data to the backend via RESTful APIs.
+Two pollination methods:
 
-Backend (FastAPI / Node.js)
-
-Purpose: Acts as the main processing hub and API provider.
-
-Key Modules:
-
-User Management: Handles authentication, role-based access, and session management.
-
-Skills & Job Management: Stores extracted skills, job data, and mapping information.
-
-Recommendation Engine: Communicates with AI modules to generate personalized results.
-
-Data Flow: Receives requests from the frontend → processes logic → calls AI models → returns results.
-
-AI Modules (Python-based ML/NLP Components)
-
-Skill Extraction Module:
-
-Uses NLP (BERT, GPT, or SpaCy) to identify skills from resumes, profiles, or uploaded text.
-
-Job Market Analysis Module:
-
-Continuously monitors APIs (e.g., LinkedIn, O*NET, Kaggle datasets) for trending roles and required skills.
-
-Dynamic Skill Gap Detector:
-
-Compares student skill sets with job market demands to detect missing or outdated skills.
-
-Uses Machine Learning models (SVM / Neural Networks) for accurate prediction.
-
-Career Recommender:
-
-Suggests suitable job roles, certifications, and learning paths using AI-based recommendation algorithms.
-
-Database (MongoDB)
-
-Purpose: Stores user data, skill profiles, job market data, and AI results.
-
-Data Types:
-
-User Profiles (students, universities, employers)
-
-Skill Repositories
-
-Job Trends & Requirements
-
-Recommendation Histories
-
-Reason for MongoDB: Flexible schema for evolving AI outputs and rapid prototyping.
-
-External Data Sources
-
-APIs Integrated:
-
-LinkedIn Jobs API – Real-time job postings and required skills.
-
-O*NET Database – Occupational data and skill taxonomies.
-
-Kaggle / WEF datasets – Market and skill demand trends.
-
-Security & Ethics
-
-Implements JWT-based authentication, data anonymization, and GDPR-compliance.
-
-Ensures ethical AI decision-making — transparency, fairness, and explainability.
-
-3. Data Flow Summary
-
-Student logs in and uploads resume → Frontend sends data to Backend API.
-
-Backend triggers AI skill extraction module → identifies skills and stores them in the database.
-
-Job market data is fetched from APIs and analyzed via Job Market Module.
-
-Skill Gap Detector compares student skills vs. job requirements → outputs missing skills.
-
-Career Recommender suggests personalized paths, shown in the Dashboard UI.
-
-4. Deployment
-
-Frontend: Deployed on Vercel / Netlify.
-
-Backend + AI modules: Deployed using Docker + Render / AWS EC2.
-
-Database: Hosted on MongoDB Atlas for scalability.
+Brush-based: Servo-controlled mechanical arm with soft bristles
+Contactless: Charged particle or soap bubble delivery
 
 
-<img width="1536" height="1024" alt="ChatGPT Image Oct 11, 2025, 06_28_19 PM" src="https://github.com/user-attachments/assets/a64a9b75-695a-4a17-ac8a-78b19239a5c1" />
+Real-time mechanism adjustment
+Pollen level monitoring
+Success rate tracking
 
+Data Intelligence
 
+GPS-tagged pollination events
+Environmental condition logging (temp, humidity, light)
+Historical pattern analysis
+Yield prediction algorithms
+Field productivity heatmaps
 
+Ground Control Station
+
+Live video feed monitoring
+Real-time telemetry dashboard
+Mission planning interface
+Emergency controls
+Post-flight analytics and reporting
