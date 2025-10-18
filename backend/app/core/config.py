@@ -1,1 +1,0 @@
-# App configurationuration settings for the application.

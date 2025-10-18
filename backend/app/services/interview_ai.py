@@ -1,1 +1,0 @@
-# AI interview preparation logic for candidates
