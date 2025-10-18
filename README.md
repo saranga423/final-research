@@ -58,3 +58,22 @@ Real-time telemetry dashboard
 Mission planning interface
 Emergency controls
 Post-flight analytics and reporting
+
+
+# Smart Pollination Assistant for Pumpkin Farming
+This is a skeleton repository for the Smart Pollination Assistant project combining IoT, Flutter, and backend development. 
+
+## Structure
+- iot-device: Arduino/ESP32 code and circuit diagrams
+- flutter-app: Flutter mobile app for farmers
+- backend-api: Node.js / Firebase API
+- datasets: Raw and processed sensor data
+- analysis: Python notebooks and graphs
+- results: Photos, videos, and evaluation reports
+- docs: Research documentation
+- references: Papers and datasheets
+- project-files: Posters, diagrams, and visuals
+
+
+
+
