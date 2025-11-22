@@ -1,0 +1,13 @@
+{
+  "drone_id": "drone_001",
+  "takeoff_altitude": 10,
+  "speed_mps": 3,
+  "mavlink_url": "udp://127.0.0.1:14550",
+  "camera": {
+    "resolution": "1080p",
+    "fps": 30
+  },
+  "temp_humidity_sensor": {
+    "update_interval_sec": 2
+  }
+}
