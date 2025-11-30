@@ -31,6 +31,7 @@ class FirebaseService {
           imageUrl: data['imageUrl'] ?? '',
           gender: data['gender'] ?? '',
           readinessScore: (data['readinessScore'] ?? 0).toDouble(),
+          imageBase64: '',
         );
       }).toList();
     });

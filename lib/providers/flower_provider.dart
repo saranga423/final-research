@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/flower_model.dart';
 import '../services/api_service.dart';
 
+
 class FlowerProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
 
@@ -19,6 +20,7 @@ class FlowerProvider extends ChangeNotifier {
       final result = await _apiService.sendImageForPrediction(base64Image);
       // Assume API returns id, gender, score, imageUrl
       final flower = Flower(
+        altitude: result['altitude'],
         id: result['id'],
         gender: result['gender'],
         readinessScore: result['score'],

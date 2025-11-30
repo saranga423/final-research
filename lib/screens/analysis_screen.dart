@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import '../models/readiness_model.dart';
 
+
 class AnalysisScreen extends StatelessWidget {
   const AnalysisScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder analysis data
+   
     final List<ReadinessResult> results = [
-      ReadinessResult(score: 0.85, isReady: true),
-      ReadinessResult(score: 0.45, isReady: false),
-      ReadinessResult(score: 0.78, isReady: true),
+      ReadinessResult(score: 0.85, isReady: true, altitude: 10.0),
+      ReadinessResult(score: 0.45, isReady: false, altitude: 15.0),
+      ReadinessResult(score: 0.78, isReady: true, altitude: 12.0),
     ];
 
     return Scaffold(

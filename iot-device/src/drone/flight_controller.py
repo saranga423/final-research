@@ -31,3 +31,5 @@ class FlightController:
             "speed": self.speed,
             "is_flying": self.is_flying
         }
+        
+__all__ = ['FlightController']

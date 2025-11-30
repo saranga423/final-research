@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import '../services/drone_service.dart';
+
 import '../models/drone_status.dart';
+import '../services/drone_service.dart';
 
 class DroneProvider extends ChangeNotifier {
   final DroneService _droneService = DroneService();
 
   DroneStatus _status = DroneStatus(isConnected: false, batteryLevel: 0, mode: 'Idle');
   DroneStatus get status => _status;
+
+  get droneStatus => null;
+
+  bool? get isFlying => null;
+
+  get lastTelemetry => null;
 
   Future<void> connect() async {
     bool connected = await _droneService.connectToDrone();
@@ -19,4 +26,12 @@ class DroneProvider extends ChangeNotifier {
     debugPrint('Drone Response: $response');
     notifyListeners();
   }
+
+  initializeDrone() {}
+
+  void syncStatus() {}
+
+  void stop() {}
+
+  void start() {}
 }

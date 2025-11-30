@@ -8,6 +8,9 @@ class Drone {
   final double latitude;
   final double longitude;
   final bool isActive;
+  final double readinessScore;
+
+
 
   Drone({
     required this.id,
@@ -17,6 +20,7 @@ class Drone {
     required this.latitude,
     required this.longitude,
     required this.isActive,
+    this.readinessScore = 0.0,
   });
 
   /// Create a Drone object from a Firestore document
@@ -29,6 +33,8 @@ class Drone {
       latitude: (data['latitude'] ?? 0).toDouble(),
       longitude: (data['longitude'] ?? 0).toDouble(),
       isActive: data['isActive'] ?? false,
+      readinessScore: (data['readinessScore'] ?? 0).toDouble(),
+
     );
   }
 
@@ -41,6 +47,7 @@ class Drone {
       'latitude': latitude,
       'longitude': longitude,
       'isActive': isActive,
+      'readinessScore': readinessScore,
     };
   }
 }

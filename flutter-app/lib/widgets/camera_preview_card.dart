@@ -5,10 +5,10 @@ class CameraPreviewCard extends StatelessWidget {
   final Widget? child;
 
   const CameraPreviewCard({
-    Key? key,
+    super.key,
     this.label = "Camera Feed",
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

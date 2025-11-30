@@ -17,6 +17,7 @@ class Drone {
     required this.latitude,
     required this.longitude,
     required this.isActive,
+    required String status,
   });
 
   /// Create a Drone object from a Firestore document
@@ -29,6 +30,7 @@ class Drone {
       latitude: (data['latitude'] ?? 0).toDouble(),
       longitude: (data['longitude'] ?? 0).toDouble(),
       isActive: data['isActive'] ?? false,
+      status: '',
     );
   }
 

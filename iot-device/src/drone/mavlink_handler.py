@@ -21,3 +21,5 @@ class MavlinkHandler:
             print(f"Sending command: {command}")
         else:
             print("MAVLink not connected. Cannot send command.")
+            
+__all__ = ['MavlinkHandler']

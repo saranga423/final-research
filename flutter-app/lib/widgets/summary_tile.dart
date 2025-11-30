@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class SummaryTile extends StatelessWidget {
@@ -7,12 +9,12 @@ class SummaryTile extends StatelessWidget {
   final Color color;
 
   const SummaryTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     this.icon = Icons.info,
     this.color = Colors.blue,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

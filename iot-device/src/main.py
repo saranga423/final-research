@@ -31,10 +31,13 @@ def main():
     for i in range(3):
         readings = sensor.read()
         print(f"Sensor reading {i+1}: {readings}")
+        
 
     # Land the drone
     fc.land()
     print("Drone landed:", fc.status())
+    
 
 if __name__ == "__main__":
     main()
+    

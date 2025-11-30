@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class SensorCard extends StatelessWidget {
@@ -7,12 +9,12 @@ class SensorCard extends StatelessWidget {
   final Color color;
 
   const SensorCard({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     this.icon = Icons.device_thermostat,
     this.color = Colors.blue,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

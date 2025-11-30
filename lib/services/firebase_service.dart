@@ -27,6 +27,7 @@ class FirebaseService {
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return Flower(
+          altitude: (data['altitude'] ?? 0).toDouble(),
           id: doc.id,
           imageUrl: data['imageUrl'] ?? '',
           gender: data['gender'] ?? '',

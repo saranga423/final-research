@@ -8,6 +8,8 @@ class AppTheme {
       elevation: 0,
       backgroundColor: Colors.green,
       titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      
     ),
   );
+
 }

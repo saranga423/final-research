@@ -18,3 +18,12 @@ class TempHumiditySensor:
             "temperature": self.temperature,
             "humidity": self.humidity
         }
+        
+    def capture(self):
+        """Return temperature and humidity info in a dict for unified access"""
+        return {
+            "temperature": self.temperature,
+            "humidity": self.humidity
+        }
+
+__all__ = ['TempHumiditySensor']

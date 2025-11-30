@@ -3,11 +3,13 @@ class Flower {
   final String imageUrl;
   final String gender; // male, female
   final double readinessScore;
+  final double altitude;
 
   Flower({
     required this.id,
     required this.imageUrl,
     required this.gender,
     required this.readinessScore,
+    required this.altitude,
   });
 }

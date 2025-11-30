@@ -9,5 +9,10 @@ class Flower {
     required this.imageUrl,
     required this.gender,
     required this.readinessScore,
+    required String imageBase64,
   });
+
+  get name => null;
+
+  get species => null;
 }

@@ -21,4 +21,11 @@ class CameraSensor:
             return None
         print("Capturing image...")
         # Here, return a simulated image path or data
-        return "image_data_placeholder"
+        return {"image_data": "image_data_placeholder"}
+    def capture(self):
+        """Return image info in a dict for unified access"""
+        image_data = self.capture_image()
+        return {"camera_image": image_data}
+    
+__all__ = ['CameraSensor']
+

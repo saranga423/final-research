@@ -1,3 +1,5 @@
+// ignore_for_file: control_flow_in_finally
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
