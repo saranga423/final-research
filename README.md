@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # final-research
 
 An advanced AI-powered autonomous drone system designed to revolutionize agricultural pollination for pumpkin farms in Sri Lanka and similar tropical regions. This system addresses critical challenges of manual pollination including labor intensity, timing precision, pollinator decline, and climate variability.
@@ -78,3 +79,21 @@ This is a skeleton repository for the Smart Pollination Assistant project combin
 
 
 >>>>>>> 7453af0f904a561de5db6706b4629b76aa96429c
+=======
+# flutter_app
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+>>>>>>> 4cbdab79bc9f34dbebb7b4401209701ea2169c3f

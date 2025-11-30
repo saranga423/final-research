@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4cbdab79bc9f34dbebb7b4401209701ea2169c3f
 # Miscellaneous
 *.class
 *.log
@@ -44,6 +47,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+<<<<<<< HEAD
 =======
 # Node.js
 node_modules/
@@ -205,3 +209,5 @@ vendor/
 .jspm_packages/
 .packages/
 >>>>>>> 7453af0f904a561de5db6706b4629b76aa96429c
+=======
+>>>>>>> 4cbdab79bc9f34dbebb7b4401209701ea2169c3f
