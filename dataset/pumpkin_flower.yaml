@@ -1,0 +1,8 @@
+
+path: dataset
+train: images/train
+val: images/val
+
+names:
+  0: male_flower
+  1: female_flower
