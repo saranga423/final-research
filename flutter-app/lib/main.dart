@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/flower_provider.dart';
 import 'providers/drone_provider.dart';
+import 'screens/predictive_analytics_screen.dart';
 
 void main() {
   runApp(
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pollination Research App',
+      title: 'Smart Pollination Assistant',
       theme: ThemeData(
         primarySwatch: Colors.green,
         brightness: Brightness.light,
@@ -52,8 +53,9 @@ class _MainScreenState extends State<MainScreen> {
   static final List<Widget> _screens = <Widget>[
     const HomeScreen(),
     const ResearchScreen(),
-    const DroneScreen(),
+    const RobotScreen(),
     const AnalyticsScreen(),
+    const PredictiveAnalyticsScreen(),
     const ProfileScreen(),
   ];
 
@@ -78,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pollination Research App'),
+        title: const Text('Smart Pollination Assistant'),
         actions: [
           IconButton(icon: const Icon(Icons.search), onPressed: _openSearch),
           IconButton(
@@ -114,8 +116,8 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.air),
-              title: const Text('Drone'),
+              leading: const Icon(Icons.smart_toy),
+              title: const Text('Robot Control'),
               onTap: () {
                 Navigator.pop(context);
                 _onItemTapped(2);
@@ -130,11 +132,19 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.trending_up),
+              title: const Text('Predictive Analytics'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(4);
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
-                _onItemTapped(4);
+                _onItemTapped(5);
               },
             ),
             const Divider(),
@@ -161,9 +171,11 @@ class _MainScreenState extends State<MainScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.science), label: 'Research'),
-          BottomNavigationBarItem(icon: Icon(Icons.air), label: 'Drone'),
+          BottomNavigationBarItem(icon: Icon(Icons.smart_toy), label: 'Robot'),
           BottomNavigationBarItem(
               icon: Icon(Icons.analytics), label: 'Analytics'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.trending_up), label: 'Predict'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
@@ -174,7 +186,8 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Open camera scanner (placeholder).')),
+            const SnackBar(
+                content: Text('Field scan initialized (placeholder).')),
           );
         },
         label: const Text('Scan Field'),
@@ -199,7 +212,7 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         children: [
           const Text(
-            'Welcome to Pollination Research App',
+            'Smart Pollination Research System',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
@@ -210,8 +223,8 @@ class HomeScreen extends StatelessWidget {
                   elevation: 3,
                   child: ListTile(
                     leading: const Icon(Icons.grass, color: Colors.green),
-                    title: const Text('Local Flowers'),
-                    subtitle: Text('$flowerCount tracked species'),
+                    title: const Text('Pumpkin Crops'),
+                    subtitle: Text('$flowerCount monitored plants'),
                     onTap: () {
                       final parent =
                           context.findAncestorStateOfType<_MainScreenState>();
@@ -225,9 +238,9 @@ class HomeScreen extends StatelessWidget {
                 child: Card(
                   elevation: 3,
                   child: ListTile(
-                    leading: const Icon(Icons.bug_report, color: Colors.green),
-                    title: const Text('Bee Study'),
-                    subtitle: const Text('Latest bee activity snapshots'),
+                    leading: const Icon(Icons.smart_toy, color: Colors.green),
+                    title: const Text('Robot Status'),
+                    subtitle: const Text('Pollination automation metrics'),
                     onTap: () {
                       final parent =
                           context.findAncestorStateOfType<_MainScreenState>();
@@ -240,19 +253,19 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           HomeFeatureCard(
-            icon: Icons.bug_report,
-            title: 'Bee Population Study',
-            subtitle: 'Ongoing research on bee pollination patterns.',
+            icon: Icons.smart_toy,
+            title: 'Artificial Pollination System',
+            subtitle: 'Humanoid robot-assisted pollination for pumpkin crops.',
           ),
           HomeFeatureCard(
             icon: Icons.local_florist,
-            title: 'Flower Diversity',
-            subtitle: 'Tracking flower species diversity in your area.',
+            title: 'Crop Health Monitoring',
+            subtitle: 'Track flowering success and pollination efficiency.',
           ),
           HomeFeatureCard(
             icon: Icons.map,
             title: 'Field Mapping',
-            subtitle: 'Log field observations and site locations.',
+            subtitle: 'Deploy and navigate robot across field locations.',
           ),
         ],
       ),
@@ -315,30 +328,32 @@ class ResearchScreen extends StatelessWidget {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           ResearchItem(
-              title: 'Pumpkin Pollination Data',
-              description: 'Detailed stats on pumpkin reproductive success.'),
+              title: 'Pumpkin Pollination Efficiency',
+              description:
+                  'Metrics on reproductive success with robot-assisted pollination.'),
           ResearchItem(
-              title: 'Bee Behavior Patterns',
-              description: 'Tracking bee movement and foraging behavior.'),
+              title: 'Robot Deployment Patterns',
+              description:
+                  'Optimal navigation routes and scheduling for field coverage.'),
           ResearchItem(
-              title: 'Flower Species Analysis',
-              description: 'Comparing pollinator attraction across species.'),
+              title: 'Flowering Stage Analysis',
+              description:
+                  'Timing and identification of optimal pollination windows.'),
           const SizedBox(height: 12),
-          const Text('Tracked Flowers',
+          const Text('Monitored Pumpkin Crops',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           if (flowers.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 12),
-              child:
-                  Center(child: Text('No flowers loaded — pull to refresh.')),
+              child: Center(child: Text('No crops loaded — pull to refresh.')),
             )
           else
             ...flowers.map((f) => Card(
                   child: ListTile(
                     leading: Icon(Icons.local_florist, color: Colors.green),
-                    title: Text(f.name ?? 'Unknown'),
-                    subtitle: Text(f.species ?? ''),
+                    title: Text(f.name),
+                    subtitle: Text(f.species),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -353,8 +368,8 @@ class ResearchScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: Icon(Icons.map, color: Colors.green),
-              title: Text('Open Field Map (placeholder)'),
-              subtitle: Text('Tap to view map and site markers.'),
+              title: Text('Field Deployment Map'),
+              subtitle: Text('View robot deployment zones and coverage areas.'),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Map view (placeholder)')));
@@ -392,10 +407,10 @@ class ResearchItem extends StatelessWidget {
   }
 }
 
-// -------------------- Drone --------------------
+// -------------------- Robot Control --------------------
 
-class DroneScreen extends StatelessWidget {
-  const DroneScreen({super.key});
+class RobotScreen extends StatelessWidget {
+  const RobotScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -407,22 +422,22 @@ class DroneScreen extends StatelessWidget {
         children: [
           Card(
             child: ListTile(
-              leading: Icon(Icons.air, color: Colors.green),
-              title: Text('Drone Status'),
-              subtitle: Text(droneProv.droneStatus ?? 'Unknown'),
+              leading: Icon(Icons.smart_toy, color: Colors.green),
+              title: Text('Robot Status'),
+              subtitle: Text(droneProv.droneStatus ?? 'Idle'),
               trailing: TextButton(
                 onPressed: () {
                   if (droneProv.isFlying == true) {
                     droneProv.stop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Drone landing...')));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Robot returning to dock...')));
                   } else {
                     droneProv.start();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Drone taking off...')));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Robot deployment initiated...')));
                   }
                 },
-                child: Text(droneProv.isFlying == true ? 'Land' : 'Launch'),
+                child: Text(droneProv.isFlying == true ? 'Stop' : 'Deploy'),
               ),
             ),
           ),
@@ -430,11 +445,11 @@ class DroneScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: Icon(Icons.timeline, color: Colors.green),
-              title: Text('Last Telemetry'),
-              subtitle: Text(droneProv.lastTelemetry ?? 'No telemetry yet'),
+              title: Text('Last Operation'),
+              subtitle: Text(droneProv.lastTelemetry ?? 'No operations yet'),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Telemetry details (placeholder)')));
+                    content: Text('Operation details (placeholder)')));
               },
             ),
           ),
@@ -444,10 +459,10 @@ class DroneScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.flight, size: 80, color: Colors.green),
+                  Icon(Icons.smart_toy, size: 80, color: Colors.green),
                   SizedBox(height: 8),
                   Text(
-                    'Live map & flight path coming soon',
+                    'Robot operational dashboard coming soon',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -471,14 +486,14 @@ class AnalyticsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: ListView(
         children: [
-          const Text('Analytics',
+          const Text('Analytics Dashboard',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           Card(
             child: ListTile(
               leading: Icon(Icons.pie_chart, color: Colors.green),
               title: Text('Pollination Success Rate'),
-              subtitle: Text('Current: 72% (sample)'),
+              subtitle: Text('Current: 87% (robot-assisted)'),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Open detailed chart (placeholder)')));
@@ -488,17 +503,16 @@ class AnalyticsScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: Icon(Icons.show_chart, color: Colors.green),
-              title: Text('Bee Visits / Day'),
-              subtitle: Text('Avg: 120 visits'),
+              title: Text('Robot Deployment Hours'),
+              subtitle: Text('Weekly: 42 hours operational'),
             ),
           ),
-          
-          // flower power
           Card(
             child: ListTile(
-               leading: Icon(Icons.local_florist, color: Colors.green),
-              title: Text('Top Flower Attractiveness'),
-              subtitle: Text('1) Flower A\n2) Flower B\n3) Flower C'),
+              leading: Icon(Icons.local_florist, color: Colors.green),
+              title: Text('Crop Pollination Coverage'),
+              subtitle: Text(
+                  '1) Field Zone A: 95%\n2) Field Zone B: 88%\n3) Field Zone C: 92%'),
             ),
           ),
         ],
@@ -565,12 +579,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 class DataSearch extends SearchDelegate<String> {
   final List<String> data = [
-    'Bee Population Study',
-    'Flower Diversity',
+    'Artificial Pollination System',
+    'Crop Health Monitoring',
     'Field Mapping',
-    'Pumpkin Pollination Data',
-    'Bee Behavior Patterns',
-    'Flower Species Analysis'
+    'Pumpkin Pollination Efficiency',
+    'Robot Deployment Patterns',
+    'Flowering Stage Analysis'
   ];
 
   @override

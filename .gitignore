@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4cbdab79bc9f34dbebb7b4401209701ea2169c3f
+
 # Miscellaneous
 *.class
 *.log
@@ -55,29 +52,21 @@ node_modules/
 
 # Flutter
 **/build/
-.dart_tool/
 
 # Python
 __pycache__/
-*.pyc
 
 # General
-*.log
 *.tmp
-.DS_Store
 .vscode/
-.idea/
-*.swp
 *.swo
 *.bak
 *.old
 *.orig
 *.rej
-*.class
 *.jar
 *.war
 *.ear
-*.iml
 *.db
 *.sqlite
 *.sqlite3
@@ -94,7 +83,6 @@ __pycache__/
 *.out
 *.a
 *.lib
-*.log
 *.pid
 *.seed
 *.pid.lock
@@ -111,26 +99,11 @@ build/
 tmp/
 
 # IDEs and Editors
-.vscode/
-.idea/
 *.sublime-project
 *.sublime-workspace
 *.code-workspace
-*.swp
-*.swo
-*.bak
-*.old
-*.orig
-*.rej
-*.iml
-*.class
-*.log
-*.pid
-*.seed
-*.pid.lock
 
 # Operating System Files
-.DS_Store
 Thumbs.db
 ehthumbs.db
 Desktop.ini
@@ -146,24 +119,16 @@ Icon?
 .TemporaryItems
 .apdisk
 .LSOverride
-.VolumeIcon.icns
 .AppleDouble
 .AppleDesktop
 .NetworkTrashFolder
 .fseventsd
 .hotfiles.btree
 .metadata_never_index
-.VolumeIcon.icns
-.TemporaryItems
 
 # Logs and Databases
-*.log
 *.sql
-*.sqlite
-*.sqlite3
-*.db
 *.db-journal
-*.log.*
 *.sql.gz
 *.sqlite.gz
 *.sqlite3.gz
@@ -193,21 +158,13 @@ Icon?
 
 
 # Temporary Files
-*.tmp
 *.temp
-*.swp
 
 
 # Build Artifacts
-dist/
-build/             
 
 # Dependency Directories
-node_modules/
 vendor/
 .bower_components/
 .jspm_packages/
 .packages/
->>>>>>> 7453af0f904a561de5db6706b4629b76aa96429c
-=======
->>>>>>> 4cbdab79bc9f34dbebb7b4401209701ea2169c3f

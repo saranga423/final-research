@@ -13,15 +13,36 @@ class DetectionScreen extends StatelessWidget {
   const DetectionScreen({super.key});
 
   Future<void> captureAndSend(BuildContext context) async {
-    // Implement actual camera capture
-    final File dummyImage = File('');
-    final imageService = ImageProcessingService();
-    final base64Image = await imageService.encodeImageToBase64(dummyImage);
-
     final flowerProvider = Provider.of<FlowerProvider>(context, listen: false);
-    // create a Flower object from the base64 image and add it to the provider
-    flowerProvider.addFlower(
-        Flower(imageBase64: base64Image, id: '', imageUrl: '', gender: '', readinessScore: 0.0));
+
+    try {
+      // Implement actual camera capture
+      final File dummyImage = File('');
+      final imageService = ImageProcessingService();
+      final base64Image = await imageService.encodeImageToBase64(dummyImage);
+
+      // Create a new Flower object from the captured image
+      final newFlower = Flower(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: 'Captured Flower ${flowerProvider.flowers.length + 1}',
+        species: 'Cucurbita moschata',
+        fieldZone: 'Field Zone',
+        imageBase64: base64Image,
+        imageUrl: 'assets/captured_flower.jpg',
+        readinessScore: 0.5,
+        currentStage: FlowerDevelopmentStage.notReady,
+      );
+
+      flowerProvider.addFlower(newFlower);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Flower image captured and analyzed')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error capturing image: $e')),
+      );
+    }
   }
 
   @override

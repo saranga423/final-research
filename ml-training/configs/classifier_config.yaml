@@ -1,0 +1,41 @@
+# YOLOv8 Classification Model Configuration
+# Trains YOLOv8-Classifier for flower receptivity assessment
+# Classes: bud, open, post-pollination
+
+# Model Configuration
+model_size: 's'  # Options: n (nano), s (small), m (medium), l (large), x (xlarge)
+                 # Recommendation: Use 'n' or 's' for real-time inference
+
+# Training Parameters
+epochs: 100
+batch_size: 64              # Larger batch size for classification
+img_size: 224              # Standard classification input
+patience: 20               # Early stopping patience
+optimizer: 'Adam'          # Adam typically works better for classification
+
+# Learning Rate Schedule
+lr0: 0.001                 # Initial learning rate
+lrf: 0.01                  # Final learning rate
+weight_decay: 0.0005       # L2 regularization
+
+# Augmentation Settings (Classification)
+flipud: 0.5                # Vertical flip probability
+fliplr: 0.5                # Horizontal flip probability
+hsv_h: 0.015               # HSV hue shift
+hsv_s: 0.7                 # HSV saturation shift
+hsv_v: 0.4                 # HSV value shift
+degrees: 10.0              # Rotation degrees (higher for classification)
+translate: 0.1             # Translation
+scale: 0.3                 # Scale augmentation
+
+# Logging and Validation
+verbose: true
+plots: true
+val: true
+save_period: 5             # Save checkpoint every 5 epochs
+
+# Class Information
+classes:
+  0: 'bud'                 # Not receptive (early stage)
+  1: 'open'                # Receptive (peak stage)
+  2: 'post-pollination'    # Already pollinated

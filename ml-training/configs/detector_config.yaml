@@ -1,0 +1,41 @@
+# YOLOv8 Detection Model Configuration
+# Trains YOLOv8 for pumpkin flower localization
+
+# Model Configuration
+model_size: 'n'  # Options: n (nano), s (small), m (medium), l (large), x (xlarge)
+                 # Recommendation: Use 'n' or 's' for edge deployment
+
+# Training Parameters
+epochs: 100
+batch_size: 32              # Adjust based on GPU memory (16-64 typical)
+img_size: 640              # YOLO input size
+patience: 20               # Early stopping patience
+optimizer: 'SGD'           # Options: SGD, Adam, AdamW
+
+# Learning Rate Schedule
+lr0: 0.01                  # Initial learning rate
+lrf: 0.01                  # Final learning rate (relative to lr0)
+momentum: 0.937            # SGD momentum
+weight_decay: 0.0005       # L2 regularization
+
+# Augmentation Settings
+mosaic: 1.0                # Mosaic augmentation (0-1)
+mixup: 0.0                 # Mixup augmentation (0-1)
+flipud: 0.5                # Vertical flip probability
+fliplr: 0.5                # Horizontal flip probability
+hsv_h: 0.015               # HSV hue shift
+hsv_s: 0.7                 # HSV saturation shift
+hsv_v: 0.4                 # HSV value shift
+degrees: 0.0               # Rotation degrees
+translate: 0.1             # Translation
+scale: 0.5                 # Scale augmentation
+
+# Logging and Validation
+verbose: true
+plots: true
+val: true
+save_period: 10            # Save checkpoint every N epochs
+
+# Hardware Optimization
+# device: 0                # GPU device ID (0 for GPU, 'cpu' for CPU)
+# workers: 8               # DataLoader workers

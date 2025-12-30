@@ -1,0 +1,14 @@
+path: dataset
+
+
+train: images/train
+val: images/val
+test: images/test
+nc: 4
+
+
+names:
+  0: male_flower
+  1: female_flower
+  2: bee
+  3: wasp
