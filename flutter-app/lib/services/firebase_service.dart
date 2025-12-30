@@ -12,13 +12,18 @@ class FirebaseService {
     }
   }
 
-  final CollectionReference _flowerCollection = FirebaseFirestore.instance.collection('flowers');
+  final CollectionReference _flowerCollection =
+      FirebaseFirestore.instance.collection('flowers');
 
   Future<void> addFlower(Flower flower) async {
     await _flowerCollection.doc(flower.id).set({
+      'name': flower.name,
+      'species': flower.species,
+      'fieldZone': flower.fieldZone,
       'imageUrl': flower.imageUrl,
-      'gender': flower.gender,
       'readinessScore': flower.readinessScore,
+      'currentStage': flower.currentStage.name,
+      'plantedDate': flower.plantedDate.toIso8601String(),
     });
   }
 
@@ -28,12 +33,30 @@ class FirebaseService {
         final data = doc.data() as Map<String, dynamic>;
         return Flower(
           id: doc.id,
+          name: data['name'] ?? 'Unknown',
+          species: data['species'] ?? 'Cucurbita moschata',
+          fieldZone: data['fieldZone'] ?? 'Unknown',
           imageUrl: data['imageUrl'] ?? '',
-          gender: data['gender'] ?? '',
           readinessScore: (data['readinessScore'] ?? 0).toDouble(),
           imageBase64: '',
+          plantedDate: data['plantedDate'] != null
+              ? DateTime.parse(data['plantedDate'] as String)
+              : DateTime.now(),
+          currentStage: _parseStage(data['currentStage']),
         );
       }).toList();
     });
+  }
+
+  FlowerDevelopmentStage _parseStage(String? stageName) {
+    if (stageName == null) return FlowerDevelopmentStage.notReady;
+    try {
+      return FlowerDevelopmentStage.values.firstWhere(
+        (stage) => stage.name == stageName,
+        orElse: () => FlowerDevelopmentStage.notReady,
+      );
+    } catch (_) {
+      return FlowerDevelopmentStage.notReady;
+    }
   }
 }

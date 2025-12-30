@@ -54,8 +54,8 @@ class ReadinessScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             // Example readiness checklist
-            Column(
-              children: const [
+            const Column(
+              children: [
                 ListTile(
                   leading: Icon(Icons.bolt, color: Colors.green),
                   title: Text('Battery Charged'),

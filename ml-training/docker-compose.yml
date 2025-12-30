@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  ml-training:
+    build: .
+    container_name: polli-care-ml-training
+    ports:
+      - "8888:8888"  # Jupyter
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./notebooks:/app/notebooks
+      - ./configs:/app/configs
+      - ./scripts:/app/scripts
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: >
+      jupyter notebook
+      --ip=0.0.0.0
+      --allow-root
+      --no-browser
+      --NotebookApp.token=''
+      --NotebookApp.password=''
