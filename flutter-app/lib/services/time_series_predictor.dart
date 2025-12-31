@@ -1,4 +1,4 @@
-import '../models/flower_model.dart';
+import '../models/plant_perception_model.dart';
 
 class TimeSeriesPredictor {
   static const double temperatureOptimalMin = 20.0;

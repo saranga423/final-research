@@ -3,7 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../models/flower_model.dart';
+import '../models/plant_perception_model.dart';
 import '../services/time_series_predictor.dart';
 
 class FlowerProvider extends ChangeNotifier {

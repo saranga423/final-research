@@ -8,6 +8,7 @@ class CameraScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Capture Flower Image")),
       body: const Center(child: Text("Camera Module Placeholder")),
+      
     );
   }
 }

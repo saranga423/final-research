@@ -6,7 +6,7 @@ Trains a YOLOv8 object detection model for pumpkin flower localization
 import argparse
 import yaml
 from pathlib import Path
-from ultralytics import YOLO
+from ultralytics import YOLO # pyright: ignore[reportPrivateImportUsage]
 import torch
 
 def load_config(config_path):

@@ -5,7 +5,7 @@ Handles both detection and classification with easy integration
 
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional
-from ultralytics import YOLO
+from ultralytics import YOLO # pyright: ignore[reportPrivateImportUsage]
 import numpy as np
 import cv2
 from dataclasses import dataclass
@@ -106,30 +106,31 @@ class FlowerDetectionPipeline:
             result = det_results[0]
             
             # Process each detection
-            for box, conf in zip(result.boxes.xyxy.cpu().numpy(),
-                                result.boxes.conf.cpu().numpy()):
-                x1, y1, x2, y2 = map(int, box)
-                
-                # Crop flower region
-                flower_crop = image[y1:y2, x1:x2]
-                
-                # Classify flower readiness
-                classification = self._classify_flower(flower_crop)
-                
-                flowers.append({
-                    'bbox': (x1, y1, x2, y2),
-                    'confidence': float(conf),
-                    'classification': classification,
-                    'crop': flower_crop
-                })
-                
-                # Draw on annotated image
-                annotated_image = self._draw_detection(
-                    annotated_image, x1, y1, x2, y2,
-                    classification['class_name'],
-                    conf,
-                    classification['confidence']
-                )
+            if result.boxes is not None:
+                for box, conf in zip(result.boxes.xyxy,
+                                    result.boxes.conf):
+                    x1, y1, x2, y2 = map(int, box)
+                    
+                    # Crop flower region
+                    flower_crop = image[y1:y2, x1:x2]
+                    
+                    # Classify flower readiness
+                    classification = self._classify_flower(flower_crop)
+                    
+                    flowers.append({
+                        'bbox': (x1, y1, x2, y2),
+                        'confidence': float(conf),
+                        'classification': classification,
+                        'crop': flower_crop
+                    })
+                    
+                    # Draw on annotated image
+                    annotated_image = self._draw_detection(
+                        annotated_image, x1, y1, x2, y2,
+                        classification.class_name,
+                        float(conf),
+                        classification.confidence
+                    )
         
         return flowers, annotated_image
     
@@ -156,12 +157,30 @@ class FlowerDetectionPipeline:
         
         if len(clf_results) > 0:
             result = clf_results[0]
-            class_idx = result.probs.top1.item()
-            class_name = self.FLOWER_CLASSES.get(class_idx, 'unknown')
-            confidence = result.probs.top1conf.item()
+            if result.probs is not None:
+                class_idx = result.probs.top1.item() # pyright: ignore[reportAttributeAccessIssue]
+                class_name = self.FLOWER_CLASSES.get(class_idx, 'unknown')
+                probs = result.probs.data
+                if not isinstance(probs, np.ndarray):
+                    if hasattr(probs, 'cpu'):
+                        probs = probs.cpu().numpy()
+                    else:
+                        probs = np.array(probs)
+                confidence = float(probs[class_idx])
+            else:
+                return ClassificationResult(
+                    class_name='unknown',
+                    confidence=0.0,
+                    class_probs={}
+                )
             
             # Get all class probabilities
-            probs = result.probs.data.cpu().numpy()
+            probs = result.probs.data
+            if not isinstance(probs, np.ndarray):
+                if hasattr(probs, 'cpu'):
+                    probs = probs.cpu().numpy()
+                else:
+                    probs = np.array(probs)
             class_probs = {
                 self.FLOWER_CLASSES[i]: float(probs[i])
                 for i in range(len(self.FLOWER_CLASSES))
@@ -229,9 +248,9 @@ class FlowerDetectionPipeline:
             List of results for all images
         """
         results = []
-        image_dir = Path(image_dir)
+        image_dir_path = Path(image_dir)
         
-        for image_path in image_dir.glob('*.jpg') + image_dir.glob('*.png'):
+        for image_path in list(image_dir_path.glob('*.jpg')) + list(image_dir_path.glob('*.png')):
             logger.info(f"Processing {image_path.name}...")
             
             flowers, _ = self.process_image(str(image_path))

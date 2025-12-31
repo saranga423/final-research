@@ -6,7 +6,7 @@ Supports: ONNX, TensorRT, OpenVINO, CoreML, TFlite
 
 import argparse
 from pathlib import Path
-from ultralytics import YOLO
+from ultralytics import YOLO # pyright: ignore[reportPrivateImportUsage]
 import torch
 
 class ModelExporter:

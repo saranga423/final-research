@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/drone_status.dart';
-import '../services/drone_service.dart';
+import '../models/robot_operational_state.dart';
+import '../services/robot_action_service.dart';
 
 class DroneProvider extends ChangeNotifier {
   final DroneService _droneService = DroneService();

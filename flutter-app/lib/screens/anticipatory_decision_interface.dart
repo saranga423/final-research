@@ -3,8 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/flower_provider.dart';
-import '../models/flower_model.dart';
+import '../providers/plant_context_controller.dart';
+import '../models/plant_perception_model.dart';
 
 class PredictiveAnalyticsScreen extends StatelessWidget {
   const PredictiveAnalyticsScreen({super.key});

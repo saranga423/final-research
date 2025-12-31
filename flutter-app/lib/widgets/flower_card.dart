@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import '../models/flower_model.dart';
+import '../models/plant_perception_model.dart';
 
 class FlowerCard extends StatelessWidget {
   final Flower flower;

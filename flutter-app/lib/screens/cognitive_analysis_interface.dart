@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/readiness_model.dart';
+import '../models/decision_readiness_model.dart';
 
 class AnalysisScreen extends StatelessWidget {
   const AnalysisScreen({super.key});
@@ -11,6 +11,7 @@ class AnalysisScreen extends StatelessWidget {
       ReadinessResult(score: 0.85, isReady: true),
       ReadinessResult(score: 0.45, isReady: false),
       ReadinessResult(score: 0.78, isReady: true),
+      
     ];
 
     return Scaffold(

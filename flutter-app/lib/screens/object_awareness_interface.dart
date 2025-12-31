@@ -3,10 +3,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/flower_model.dart';
+import 'package:flutter_app/models/plant_perception_model.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/flower_provider.dart';
+import '../providers/plant_context_controller.dart';
 import '../services/image_processing_service.dart';
 
 class DetectionScreen extends StatelessWidget {
@@ -44,6 +44,7 @@ class DetectionScreen extends StatelessWidget {
       );
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {

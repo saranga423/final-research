@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/flower_model.dart';
+import '../models/plant_perception_model.dart';
 
 class FirebaseService {
   static bool _initialized = false;
