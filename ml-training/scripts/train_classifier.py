@@ -7,7 +7,7 @@ Classes: bud, open, post-pollination
 import argparse
 import yaml
 from pathlib import Path
-from ultralytics import YOLO
+from ultralytics import YOLO # pyright: ignore[reportPrivateImportUsage]
 import torch
 
 def load_config(config_path):
@@ -131,8 +131,8 @@ def test_classifier(model_path, test_image_path):
     for result in results:
         print(f"\nPredictions for {result.path}:")
         if result.probs is not None:
-            for idx, prob in enumerate(result.probs.top5):
-                print(f"  {classes[prob]}: {result.probs.top5conf[idx]:.2%}")
+            for idx, prob in enumerate(result.probs.top5): # pyright: ignore[reportAttributeAccessIssue]
+                print(f"  {classes[prob]}: {result.probs.top5conf[idx]:.2%}") # pyright: ignore[reportAttributeAccessIssue]
     
     return results
 
@@ -161,7 +161,7 @@ def batch_classify(model_path, image_dir, confidence_threshold=0.7):
     
     for result in results:
         if result.probs is not None:
-            top_class = result.probs.top1
+            top_class = result.probs.top1 # pyright: ignore[reportAttributeAccessIssue]
             class_counts[classes[top_class]] += 1
     
     print("\n=== Classification Summary ===")

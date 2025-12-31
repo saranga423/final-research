@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pollination Research App'),
+        title: const Text('Polli-Care App'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
