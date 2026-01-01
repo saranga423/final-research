@@ -10,7 +10,7 @@ class CameraScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.camera_alt, size: 100, color: Colors.green),
+          Icon(Icons.camera_alt, size: 100, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 20),
           const Text(
             'Camera Feed Placeholder',
@@ -45,8 +45,8 @@ class ReadinessScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check_circle_outline,
-                size: 100, color: Colors.blue),
+            Icon(Icons.check_circle_outline,
+                size: 100, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 20),
             const Text(
               'System Readiness Status',
@@ -54,19 +54,19 @@ class ReadinessScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             // Example readiness checklist
-            const Column(
+            Column(
               children: [
                 ListTile(
-                  leading: Icon(Icons.bolt, color: Colors.green),
-                  title: Text('Battery Charged'),
+                  leading: Icon(Icons.bolt, color: Theme.of(context).colorScheme.primary),
+                  title: const Text('Battery Charged'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.cloud, color: Colors.green),
-                  title: Text('Network Connected'),
+                  leading: Icon(Icons.cloud, color: Theme.of(context).colorScheme.primary),
+                  title: const Text('Network Connected'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.security, color: Colors.green),
-                  title: Text('Sensors OK'),
+                  leading: Icon(Icons.security, color: Theme.of(context).colorScheme.primary),
+                  title: const Text('Sensors OK'),
                 ),
               ],
             ),

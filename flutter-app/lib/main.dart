@@ -2,8 +2,10 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:math';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(
@@ -76,6 +78,8 @@ class _MainScreenState extends State<MainScreen> {
     PredictiveModelScreen(),
     TaskManagementScreen(),
     ProfileScreen(),
+    CloudScreen(),
+    ReadinessScreen(),
   ];
 
   @override
@@ -131,6 +135,8 @@ class _MainScreenState extends State<MainScreen> {
           NavigationDestination(icon: Icon(Icons.model_training), label: 'ML'),
           NavigationDestination(icon: Icon(Icons.task), label: 'Tasks'),
           NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+          NavigationDestination(icon: Icon(Icons.cloud_queue), label: 'Cloud'),
+          NavigationDestination(icon: Icon(Icons.check_circle), label: 'Readiness'),
         ],
       ),
     );
@@ -225,6 +231,8 @@ class Alert {
   final String message;
   final DateTime timestamp;
   final String severity;
+  final String alertType; // 'optimal_pollination', 'rain_warning', 'humidity_warning', etc.
+  final List<String> channels; // 'in_app', 'sms'
   bool isRead;
 
   Alert({
@@ -233,6 +241,8 @@ class Alert {
     required this.message,
     required this.timestamp,
     required this.severity,
+    required this.alertType,
+    this.channels = const ['in_app'],
     this.isRead = false,
   });
 }
@@ -585,17 +595,39 @@ class AlertProvider extends ChangeNotifier {
     _alerts.addAll([
       Alert(
         id: 'alert_1',
-        title: 'Low battery warning',
-        message: 'Drone battery at 15%. Return to charging station.',
-        timestamp: DateTime.now().subtract(Duration(minutes: 10)),
-        severity: 'warning',
+        title: 'Optimal Pollination Window',
+        message: '12 flowers are in optimal receptivity window. Recommend pollination within next 2 hours.',
+        timestamp: DateTime.now().subtract(Duration(minutes: 5)),
+        severity: 'info',
+        alertType: 'optimal_pollination',
+        channels: ['in_app', 'sms'],
       ),
       Alert(
         id: 'alert_2',
-        title: 'Optimal pollination window',
-        message: '8 flowers are in optimal receptivity window.',
-        timestamp: DateTime.now().subtract(Duration(minutes: 30)),
+        title: 'High Humidity Warning',
+        message: 'Humidity at 89%. Pollination not recommended due to high humidity conditions.',
+        timestamp: DateTime.now().subtract(Duration(minutes: 15)),
+        severity: 'warning',
+        alertType: 'humidity_warning',
+        channels: ['in_app', 'sms'],
+      ),
+      Alert(
+        id: 'alert_3',
+        title: 'Rain Warning',
+        message: 'Rain forecasted in next 3 hours. Protect flowers and postpone pollination activities.',
+        timestamp: DateTime.now().subtract(Duration(hours: 1)),
+        severity: 'warning',
+        alertType: 'rain_warning',
+        channels: ['in_app', 'sms'],
+      ),
+      Alert(
+        id: 'alert_4',
+        title: 'Optimal Pollination Window',
+        message: '8 flowers ready for pollination. Weather conditions are favorable.',
+        timestamp: DateTime.now().subtract(Duration(hours: 2)),
         severity: 'info',
+        alertType: 'optimal_pollination',
+        channels: ['in_app'],
       ),
     ]);
   }
@@ -610,6 +642,14 @@ class AlertProvider extends ChangeNotifier {
       alert.isRead = true;
     }
     notifyListeners();
+  }
+
+  void markAsRead(String id) {
+    final index = _alerts.indexWhere((a) => a.id == id);
+    if (index != -1) {
+      _alerts[index].isRead = true;
+      notifyListeners();
+    }
   }
 }
 
@@ -2103,12 +2143,595 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
+class CloudScreen extends StatelessWidget {
+  const CloudScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final env = context.watch<EnvironmentProvider>();
+
+    // Calculate flower counts (using existing data structure)
+    final femaleFlowersReady = 8; // From dashboard data
+    final maleFlowersReady = 12; // From dashboard data
+    
+    // Determine pollination status based on weather
+    final hasHighHumidity = env.humidity > 85;
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context.read<EnvironmentProvider>().loadData();
+      },
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          // Welcome Section
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Text(
+              'Welcome, Farmer!',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+
+          // Weather Alert Section
+          if (hasHighHumidity)
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade100,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.orange.shade300, width: 2),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.warning_amber_rounded,
+                      color: Colors.orange.shade800, size: 32),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Weather Alert: High Humidity Detected!',
+                          style: Theme.of(context)
+                              .textTheme.titleMedium
+                              ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange.shade900),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Pollination not recommended due to high humidity',
+                          style: TextStyle(color: Colors.orange.shade800),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${env.humidity.toStringAsFixed(0)}% Humidity, ${env.temperature.toStringAsFixed(0)}°C',
+                          style: TextStyle(
+                              color: Colors.orange.shade800,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.local_florist,
+                      color: Colors.yellow.shade700, size: 40),
+                ],
+              ),
+            ),
+
+          // Pollination Readiness Section
+          Container(
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.local_florist,
+                            color: Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Pollination Readiness',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Female Flowers Ready:',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '$femaleFlowersReady',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                        color: Theme.of(context).colorScheme.primary,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Male Flowers Ready:',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '$maleFlowersReady',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                        color: Theme.of(context).colorScheme.primary,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+
+          // Field Sensors Section
+          Container(
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.cloud,
+                            color: Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 8),
+                        Text('Field Sensors',
+                            style: Theme.of(context).textTheme.titleMedium),
+                      ],
+                    ),
+                    const Divider(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: _EnvIndicator(
+                            icon: Icons.water_drop,
+                            label: 'Soil Moisture',
+                            value: '${env.soilMoisture.toStringAsFixed(0)}%',
+                          ),
+                        ),
+                        Expanded(
+                          child: _EnvIndicator(
+                            icon: Icons.thermostat,
+                            label: 'Temp',
+                            value: '${env.temperature.toStringAsFixed(1)}°C',
+                          ),
+                        ),
+                        Expanded(
+                          child: _EnvIndicator(
+                            icon: Icons.wb_sunny,
+                            label: 'Light',
+                            value: '${env.lightIntensity.toStringAsFixed(0)}',
+                          ),
+                        ),
+                        Expanded(
+                          child: _EnvIndicator(
+                            icon: Icons.water_drop,
+                            label: 'Humidity',
+                            value: '${env.humidity.toStringAsFixed(0)}%',
+                          ),
+                        ),
+                        Expanded(
+                          child: _EnvIndicator(
+                            icon: Icons.access_time,
+                            label: 'Time',
+                            value: _formatTime(DateTime.now()),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(Icons.check_circle,
+                            color: Theme.of(context).colorScheme.primary, size: 24),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Recommended: Pollinate Tomorrow',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Farm Info Footer
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Green Valley Farm',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      'Central Valley, CA',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.grey,
+                          ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'Last updated: ${_formatTime(DateTime.now())}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatTime(DateTime dt) {
+    final hour = dt.hour.toString().padLeft(2, '0');
+    final minute = dt.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+}
+
+class ReadinessScreen extends StatefulWidget {
+  const ReadinessScreen({super.key});
+
+  @override
+  State<ReadinessScreen> createState() => _ReadinessScreenState();
+}
+
+class _ReadinessScreenState extends State<ReadinessScreen> {
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool _isLoading = false;
+  Map<String, dynamic>? _readinessResult;
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? image = await _picker.pickImage(source: source);
+      if (image != null) {
+        setState(() {
+          _image = File(image.path);
+          _readinessResult = null; // Reset previous results
+        });
+        // Automatically analyze the image
+        _analyzeReadiness();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking image: $e')),
+      );
+    }
+  }
+
+  Future<void> _analyzeReadiness() async {
+    if (_image == null) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simulate API call to backend (CNN model inference)
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Simulated readiness result
+    final isReady = Random().nextBool();
+    final result = {
+      "flowerType": Random().nextBool() ? "Male" : "Female",
+      "isReady": isReady,
+      "confidenceScore": (0.65 + Random().nextDouble() * 0.33), // 0.65 to 0.98
+      "status": isReady ? "Ready" : "Not Ready",
+    };
+
+    setState(() {
+      _readinessResult = result;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Title
+        Text(
+          'Flower Readiness Check',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        const SizedBox(height: 24),
+
+        // Image Upload Section
+        Card(
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.image,
+                        color: Theme.of(context).colorScheme.primary),
+                    const SizedBox(width: 8),
+                    Text('Flower Image',
+                        style: Theme.of(context).textTheme.titleMedium),
+                  ],
+                ),
+                const Divider(height: 24),
+                if (_image == null)
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.photo_camera,
+                            size: 64, color: Colors.grey.shade400),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No image selected',
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      _image!,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => _pickImage(ImageSource.camera),
+                        icon: const Icon(Icons.camera_alt),
+                        label: const Text('Camera'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => _pickImage(ImageSource.gallery),
+                        icon: const Icon(Icons.photo_library),
+                        label: const Text('Gallery'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        // Readiness Result Section
+        if (_isLoading)
+          Card(
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Analyzing flower image...',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+            ),
+          )
+        else if (_readinessResult != null)
+          Card(
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.check_circle_outline,
+                          color: Theme.of(context).colorScheme.primary),
+                      const SizedBox(width: 8),
+                      Text('Readiness Result',
+                          style: Theme.of(context).textTheme.titleMedium),
+                    ],
+                  ),
+                  const Divider(height: 24),
+                  // Flower Type
+                  ListTile(
+                    leading: Icon(
+                      _readinessResult!["flowerType"] == "Male"
+                          ? Icons.male
+                          : Icons.female,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: const Text('Flower Type'),
+                    trailing: Text(
+                      _readinessResult!["flowerType"],
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ),
+                  const Divider(),
+                  // Ready/Not Ready Status
+                  ListTile(
+                    leading: Icon(
+                      _readinessResult!["isReady"]
+                          ? Icons.check_circle
+                          : Icons.cancel,
+                      color: _readinessResult!["isReady"]
+                          ? Colors.green
+                          : Colors.orange,
+                    ),
+                    title: const Text('Status'),
+                    trailing: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: _readinessResult!["isReady"]
+                            ? Colors.green.shade100
+                            : Colors.orange.shade100,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        _readinessResult!["status"],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _readinessResult!["isReady"]
+                              ? Colors.green.shade800
+                              : Colors.orange.shade800,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(),
+                  // Confidence Score
+                  ListTile(
+                    leading: Icon(Icons.analytics,
+                        color: Theme.of(context).colorScheme.primary),
+                    title: const Text('Confidence Score'),
+                    trailing: Text(
+                      '${(_readinessResult!["confidenceScore"] * 100).toStringAsFixed(1)}%',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ),
+                  // Progress indicator for confidence
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: LinearProgressIndicator(
+                      value: _readinessResult!["confidenceScore"],
+                      backgroundColor: Colors.grey.shade200,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).colorScheme.primary,
+                      ),
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        const SizedBox(height: 16),
+
+        // Info Card
+        Card(
+          color: Colors.blue.shade50,
+          elevation: 1,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.blue.shade700),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'CNN model inference combines image analysis with sensor fusion data for accurate readiness assessment.',
+                    style: TextStyle(color: Colors.blue.shade900),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class AlertsSheet extends StatelessWidget {
   const AlertsSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final alerts = context.watch<AlertProvider>().alerts;
+    final alertProvider = context.watch<AlertProvider>();
+    final alerts = alertProvider.alerts;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -2118,46 +2741,176 @@ class AlertsSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Notifications',
+              Text('Notifications & Alerts',
                   style: Theme.of(context).textTheme.titleLarge),
-              IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () => Navigator.pop(context),
+              Row(
+                children: [
+                  if (alerts.isNotEmpty)
+                    TextButton(
+                      onPressed: () => alertProvider.markAllRead(),
+                      child: const Text('Mark all read'),
+                    ),
+                  IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               ),
             ],
           ),
           const Divider(),
           Expanded(
             child: alerts.isEmpty
-                ? Center(child: Text('No notifications'))
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.notifications_none,
+                            size: 64, color: Colors.grey.shade400),
+                        const SizedBox(height: 16),
+                        Text('No notifications',
+                            style: TextStyle(color: Colors.grey.shade600)),
+                      ],
+                    ),
+                  )
                 : ListView.builder(
                     itemCount: alerts.length,
                     itemBuilder: (context, index) {
                       final alert = alerts[index];
                       return Card(
                         margin: const EdgeInsets.only(bottom: 8),
+                        elevation: alert.isRead ? 1 : 2,
+                        color: alert.isRead ? Colors.grey.shade50 : Colors.white,
                         child: ListTile(
                           leading: CircleAvatar(
                             backgroundColor: _getSeverityColor(alert.severity),
                             child: Icon(
-                              _getSeverityIcon(alert.severity),
+                              _getAlertTypeIcon(alert.alertType),
                               color: Colors.white,
                               size: 20,
                             ),
                           ),
-                          title: Text(alert.title),
+                          title: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  alert.title,
+                                  style: TextStyle(
+                                    fontWeight: alert.isRead
+                                        ? FontWeight.normal
+                                        : FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              if (!alert.isRead)
+                                Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                            ],
+                          ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(alert.message),
                               const SizedBox(height: 4),
-                              Text(
-                                _formatTimestamp(alert.timestamp),
-                                style: Theme.of(context).textTheme.bodySmall,
+                              Text(alert.message),
+                              const SizedBox(height: 8),
+                              // Alert type badge
+                              Wrap(
+                                spacing: 8,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: _getAlertTypeColor(alert.alertType)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: _getAlertTypeColor(alert.alertType)
+                                            .withOpacity(0.3),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      _getAlertTypeLabel(alert.alertType),
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                        color: _getAlertTypeColor(alert.alertType),
+                                      ),
+                                    ),
+                                  ),
+                                  // Timestamp
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.access_time,
+                                          size: 12, color: Colors.grey.shade600),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        _formatTimestamp(alert.timestamp),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(color: Colors.grey.shade600),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Channels
+                              Row(
+                                children: [
+                                  Icon(Icons.notifications,
+                                      size: 14, color: Colors.grey.shade600),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Channels: ',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                  ...alert.channels.map((channel) => Padding(
+                                        padding: const EdgeInsets.only(right: 8),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              channel == 'sms'
+                                                  ? Icons.sms
+                                                  : Icons.phone_android,
+                                              size: 12,
+                                              color: Colors.grey.shade600,
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              channel == 'sms' ? 'SMS' : 'In-App',
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.grey.shade600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
                               ),
                             ],
                           ),
-                          isThreeLine: true,
+                          isThreeLine: false,
+                          onTap: () {
+                            // Mark as read when tapped
+                            if (!alert.isRead) {
+                              alertProvider.markAsRead(alert.id);
+                            }
+                          },
                         ),
                       );
                     },
@@ -2181,16 +2934,42 @@ class AlertsSheet extends StatelessWidget {
     }
   }
 
-  IconData _getSeverityIcon(String severity) {
-    switch (severity) {
-      case 'error':
-        return Icons.error;
-      case 'warning':
-        return Icons.warning;
-      case 'info':
-        return Icons.info;
+  IconData _getAlertTypeIcon(String alertType) {
+    switch (alertType) {
+      case 'optimal_pollination':
+        return Icons.local_florist;
+      case 'rain_warning':
+        return Icons.umbrella;
+      case 'humidity_warning':
+        return Icons.water_drop;
       default:
         return Icons.notifications;
+    }
+  }
+
+  Color _getAlertTypeColor(String alertType) {
+    switch (alertType) {
+      case 'optimal_pollination':
+        return Colors.green;
+      case 'rain_warning':
+        return Colors.blue;
+      case 'humidity_warning':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String _getAlertTypeLabel(String alertType) {
+    switch (alertType) {
+      case 'optimal_pollination':
+        return 'Optimal Pollination Window';
+      case 'rain_warning':
+        return 'Rain Warning';
+      case 'humidity_warning':
+        return 'Humidity Warning';
+      default:
+        return 'Alert';
     }
   }
 
@@ -2199,7 +2978,8 @@ class AlertsSheet extends StatelessWidget {
     if (diff.inMinutes < 1) return 'Just now';
     if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
     if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    return '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
   }
 }
 
@@ -2252,6 +3032,8 @@ class AppDrawer extends StatelessWidget {
           _item(context, 'Tasks', Icons.task, 7),
           const Divider(),
           _item(context, 'Profile', Icons.person, 8),
+          _item(context, 'Cloud', Icons.cloud_queue, 9),
+          _item(context, 'Readiness', Icons.check_circle, 10),
         ],
       ),
     );

@@ -54,7 +54,7 @@ class _DroneScreenState extends State<DroneScreen> {
                 const SizedBox(height: 5),
                 Text(
                   _isFlying ? "Drone is airborne" : "Drone is grounded",
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
                 ),
               ],
             ),

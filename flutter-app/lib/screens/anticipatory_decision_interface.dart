@@ -26,10 +26,10 @@ class PredictiveAnalyticsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           if (highUrgencyFlowers.isNotEmpty) ...[
-            const Text(
+            Text(
               'High Priority Alerts',
               style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w600, color: Colors.red),
+                  fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.error),
             ),
             const SizedBox(height: 8),
             ...highUrgencyFlowers.map(
@@ -127,8 +127,8 @@ class PredictiveAnalyticsScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 4),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle,
-                          size: 16, color: Colors.green),
+                      Icon(Icons.check_circle,
+                          size: 16, color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 8),
                       Expanded(
                           child: Text(action,
@@ -149,7 +149,7 @@ class PredictiveAnalyticsScreen extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ExpansionTile(
-        leading: const Icon(Icons.local_florist, color: Colors.green),
+        leading: Icon(Icons.local_florist, color: Theme.of(context).colorScheme.primary),
         title: Text(flower.name),
         subtitle: Text('${flower.species} - ${flower.fieldZone}'),
         children: [
