@@ -25,7 +25,7 @@ class AnalysisScreen extends StatelessWidget {
             child: ListTile(
               leading: Icon(
                 result.isReady ? Icons.check_circle : Icons.cancel,
-                color: result.isReady ? Colors.green : Colors.red,
+                color: result.isReady ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.error,
               ),
               title: Text("Flower ${index + 1}"),
               subtitle: Text("Readiness Score: ${result.score.toStringAsFixed(2)}"),
