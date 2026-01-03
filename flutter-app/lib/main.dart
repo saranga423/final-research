@@ -762,7 +762,7 @@ class HomeScreen extends StatelessWidget {
                       _EnvIndicator(
                         icon: Icons.wb_sunny,
                         label: 'Light',
-                        value: '${env.lightIntensity.toStringAsFixed(0)}',
+                        value: env.lightIntensity.toStringAsFixed(0),
                       ),
                     ],
                   ),

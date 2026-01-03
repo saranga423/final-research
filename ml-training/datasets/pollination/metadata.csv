@@ -1,0 +1,2 @@
+samples_total,features,target,classes
+5000,"['temperature', 'humidity', 'light_lux', 'soil_moisture']",flower_stage,"['closed', 'open', 'ready']"
